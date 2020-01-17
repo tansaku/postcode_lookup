@@ -4,7 +4,6 @@
   <%= text_field_tag(:postcode, @postcode) %>
   <%= submit_tag("Submit") %>
 <% end %>
-<% # byebug %>
 <% if @postcode %>
 <h2>
   <%= @postcode %> is <%= @whitelisted ? '' : 'not' %> whitelisted

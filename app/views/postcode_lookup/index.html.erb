@@ -7,6 +7,6 @@
 <% # byebug %>
 <% if @postcode %>
 <h2>
-  <%= @postcode %> is whitelisted
+  <%= @postcode %> is <%= @whitelisted ? '' : 'not' %> whitelisted
 </h2>
 <% end %>

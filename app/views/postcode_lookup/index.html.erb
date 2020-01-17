@@ -1,7 +1,12 @@
-  <%= form_with(url: "/", method: "get") do %>
+<h1>PostCode Lookup</h1>
+<%= form_with(url: "/", method: "get", local: true) do %>
   <%= label_tag(:postcode, "PostCode:") %>
-  <%= text_field_tag(:postcode) %>
+  <%= text_field_tag(:postcode, @postcode) %>
   <%= submit_tag("Submit") %>
 <% end %>
-  
-  HA1 4LX is not whitelisted
+<% # byebug %>
+<% if @postcode %>
+<h2>
+  <%= @postcode %> is whitelisted
+</h2>
+<% end %>

@@ -2,5 +2,6 @@
 
 class PostcodeLookupController < ApplicationController
   def index
+    @postcode = params[:postcode]
   end
 end

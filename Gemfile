@@ -35,7 +35,6 @@ gem "bootsnap", ">= 1.4.2", require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
-
 end
 
 group :development do
@@ -52,6 +51,10 @@ group :test do
   gem "rspec-rails"
   gem "rubocop"
   gem "rubocop-rails_config"
+  gem "rubocop-performance"
+  gem "rubocop-rspec"
+  gem "simplecov"
+  gem "simplecov-console"
 end
 
 gem "postcodes_io"

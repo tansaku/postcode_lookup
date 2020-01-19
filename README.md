@@ -60,10 +60,52 @@ none at present
 
 * Database initialization?
 
-* How to run the test suite (and linting via rubocop)
+* Run the test suite (and linting via rubocop) by the following command
 
 ```sh
-$ ./bin/rails default
+$ bundle exec ./bin/rails default
+```
+
+which should produce output like the following:
+
+```
+Running RuboCop...
+Inspecting 17 files
+.................
+
+17 files inspected, no offenses detected
+/Users/tansaku/.rvm/rubies/ruby-2.6.5/bin/ruby -I/Users/tansaku/.rvm/gems/ruby-2.6.5/gems/rspec-core-3.9.1/lib:/Users/tansaku/.rvm/gems/ruby-2.6.5/gems/rspec-support-3.9.2/lib /Users/tansaku/.rvm/gems/ruby-2.6.5/gems/rspec-core-3.9.1/exe/rspec --pattern spec/\*\*\{,/\*/\*\*\}/\*_spec.rb
+
+lookup postcode
+  check a non whitelisted postcode
+  check a Southwark postcode is whitelisted
+  check a Lambeth postcode is whitelisted
+  check an unknown postcode is whitelisted
+  check an API unknown postcode is whitelisted when specified
+  check an API unknown postcode is not whitelisted
+  handle error from WhitelistChecker
+
+WhitelistChecker
+  Lambeth postcode
+    is whitelisted
+  Southwark postcode
+    is whitelisted
+  specifically whitelisted API unknown postcode
+    is whitelisted, e.g. 'SH24 1AA'
+    is whitelisted, e.g. 'SH24 1AB'
+  Harrow postcode
+    is not whitelisted
+  API unknown postcodes that are not on the whitelist
+    is not whitelisted
+  Errors
+    lsoa is empty string
+      postcode is not whitelisted
+
+Finished in 4.98 seconds (files took 7.6 seconds to load)
+14 examples, 0 failures
+
+
+COVERAGE: 100.00% -- 77/77 lines in 19 files
 ```
 
 * Deployment instructions
@@ -84,11 +126,14 @@ https://postcode-checker.herokuapp.com/
 * [ ] extract the actual whitelists
   - [ ] static files?
   - [ ] stick them in the database?
+  - [ ] show the whitelists on the main page?
 * [x] error cases
 * [ ] checking input format
 * [ ] refactoring?
+* [x] test coverage
 * [ ] stubbing test calls to postcodes.io? 
   - [x] unit tests
+     - [ ] mockwreck issue? don't stub what you don't own?
   - [ ] acceptance tests
-* [ ] deploy to heroku?
-* [ ] ajax request?
+* [x] deploy to heroku
+* [ ] Should the form use an ajax request?

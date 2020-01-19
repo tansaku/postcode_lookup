@@ -3,32 +3,69 @@
 require "spec_helper"
 require "whitelist_checker"
 
-describe WhitelistChecker, focuse: true do
+describe WhitelistChecker do
   let(:postcodes) { double :postcodes, lookup: result }
   let(:postcodes_io) { double :postcodes_io, new: postcodes }
   subject { described_class }
 
-  context "Lambeth postcode" do
-    let(:result) { double :result, lsoa: "Lambeth 036" }
-    it "is whitelisted" do
-      expect(subject.whitelisted?("SE1 7QA", postcodes_io)).to be_truthy
+  context "Lambeth and Southwark not whiteslisted via lsoa" do
+    before do
+      allow(Borough).to receive_message_chain(:all, :pluck).and_return([])
+    end
+
+    context "Lambeth postcode" do
+      let(:result) { double :result, lsoa: "Lambeth 036" }
+      it "is whitelisted" do
+        expect(subject.whitelisted?("SE1 7QA", postcodes_io)).to be_falsy
+      end
     end
   end
 
-  context "Southwark postcode" do
-    let(:result) { double :result, lsoa: "Southwark 034A" }
-    it "is whitelisted" do
-      expect(subject.whitelisted?("SE1 7QD", postcodes_io)).to be_truthy
+  context "Lambeth and Southwark whiteslisted via lsoa" do
+    before do
+      allow(Borough).to receive_message_chain(:all, :pluck).and_return(["Lambeth", "Southwark"])
+    end
+
+    context "Lambeth postcode" do
+      let(:result) { double :result, lsoa: "Lambeth 036" }
+      it "is whitelisted" do
+        expect(subject.whitelisted?("SE1 7QA", postcodes_io)).to be_truthy
+      end
+    end
+
+    context "Southwark postcode" do
+      let(:result) { double :result, lsoa: "Southwark 034A" }
+      it "is whitelisted" do
+        expect(subject.whitelisted?("SE1 7QD", postcodes_io)).to be_truthy
+      end
     end
   end
 
   context "specifically whitelisted API unknown postcode" do
     let(:postcodes) { double :postcodes, lookup: nil }
+    before do
+      allow(Postcode).to receive_message_chain(:all, :pluck).and_return(["SH24 1AA", "SH24 1AB"])
+    end
+
     it "is whitelisted, e.g. 'SH24 1AA'" do
       expect(subject.whitelisted?("SH24 1AA")).to be_truthy
     end
     it "is whitelisted, e.g. 'SH24 1AB'" do
       expect(subject.whitelisted?("SH24 1AB")).to be_truthy
+    end
+  end
+
+  context "not specifically whitelisted API unknown postcode" do
+    let(:postcodes) { double :postcodes, lookup: nil }
+    before do
+      allow(Postcode).to receive_message_chain(:all, :pluck).and_return([])
+    end
+
+    it "is whitelisted, e.g. 'SH24 1AA'" do
+      expect(subject.whitelisted?("SH24 1AA")).to be_falsy
+    end
+    it "is whitelisted, e.g. 'SH24 1AB'" do
+      expect(subject.whitelisted?("SH24 1AB")).to be_falsy
     end
   end
 

@@ -3,12 +3,19 @@
 require "rails_helper"
 
 feature "lookup postcode", type: :feature do
+  before do
+    Borough.create!(name: "Southwark")
+    Borough.create!(name: "Lambeth")
+    Postcode.create!(name: "SH24 1AA")
+    Postcode.create!(name: "SH24 1AB")
+  end
+
   scenario "check a non whitelisted postcode" do
     submit_postcode("HA1 4LX")
     expect(page).to have_text("HA1 4LX is not whitelisted")
   end
 
-  scenario "check a Southwark postcode is whitelisted", focus: false do
+  scenario "check a Southwark postcode is whitelisted" do
     submit_postcode("SE1 7QD")
     expect(page).to have_text("SE1 7QD is whitelisted")
   end
@@ -24,8 +31,8 @@ feature "lookup postcode", type: :feature do
   end
 
   scenario "check an API unknown postcode is whitelisted when specified" do
-    submit_postcode("SH24 1AA")
-    expect(page).to have_text("SH24 1AA is whitelisted")
+    submit_postcode("SH24 1AB")
+    expect(page).to have_text("SH24 1AB is whitelisted")
   end
 
   scenario "check an API unknown postcode is not whitelisted" do

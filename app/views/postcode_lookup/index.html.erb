@@ -1,4 +1,4 @@
-<h1>PostCode Lookup</h1>
+<h1>PostCode Whitelist Checker</h1>
 <%= form_with(url: "/", method: "get", local: true) do %>
   <%= label_tag(:postcode, "PostCode:") %>
   <%= text_field_tag(:postcode, @postcode) %>
@@ -9,3 +9,24 @@
   <%= @postcode %> is <%= @whitelisted ? '' : 'not' %> whitelisted
 </h2>
 <% end %>
+
+<hr />
+<table>
+<tr>
+  <th>WhiteListed Boroughs</th>
+</tr>
+<% Borough.all.pluck(:name).each do |name| %>
+  <tr><td><%= name %></td></tr>
+<% end %>
+</table>
+
+<hr />
+
+<table>
+<tr>
+  <th>WhiteListed Postcodes</th>
+</tr>
+<% Postcode.all.pluck(:name).each do |name| %>
+  <tr><td><%= name %></td></tr>
+<% end %>
+</table>

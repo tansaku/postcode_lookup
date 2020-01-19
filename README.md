@@ -44,6 +44,17 @@ $ bundle exec rails server
 
 http://localhost:3000
 
+If you want to set up whitelisted boroughs and postcodes, you can do so as follows:
+
+```sh
+$ bundle exec ./bin/rails console
+
+> Borough.create!(name: "Southwark")
+> Borough.create!(name: "Lambeth")
+> Postcode.create!(name: "SH24 1AA")
+> Postcode.create!(name: "SH24 1AB")
+```
+
 include an animated gif of the system in operation?
 
 
@@ -115,6 +126,24 @@ To deploy to heroku web hosting (assuming [heroku CLI](https://devcenter.heroku.
 ```sh
 $ heroku create postcode-checker
 $ git push heroku master
+$ heroku run rails db:migrate
+```
+
+and potentially
+
+```
+$ heroku addons:create heroku-postgresql:hobby-dev
+```
+
+Finally, you can set up whitelisted boroughs and postcodes on heroku like so:
+
+```sh
+$ heroku run rails console
+
+> Borough.create!(name: "Southwark")
+> Borough.create!(name: "Lambeth")
+> Postcode.create!(name: "SH24 1AA")
+> Postcode.create!(name: "SH24 1AB")
 ```
 
 The app can then be accessed on heroku, e.g. 
@@ -123,10 +152,9 @@ https://postcode-checker.herokuapp.com/
 
 ## TODO
 
-* [ ] extract the actual whitelists
-  - [ ] static files?
-  - [ ] stick them in the database?
-  - [ ] show the whitelists on the main page?
+* [x] extract the actual whitelists
+  - [x] stick them in the database
+  - [x] show the whitelists on the main page
 * [x] error cases
 * [ ] checking input format
 * [ ] refactoring?

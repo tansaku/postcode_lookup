@@ -2,7 +2,6 @@
 
 require "postcodes_io"
 WHITELISTED_POSTCODES = ["SH24 1AA", "SH24 1AB"]
-WHITELISTED_BOROUGHS = %w[Southwark Lambeth]
 
 class WhitelistChecker
   def self.whitelisted?(postcode, api = Postcodes::IO)
@@ -29,10 +28,18 @@ class WhitelistChecker
     end
 
     def whitelisted_via_lsoa?
-      result.lsoa.start_with?(Regexp.union(WHITELISTED_BOROUGHS))
+      result.lsoa.start_with?(Regexp.union(whitelisted_boroughs))
     end
 
     def whitelisted_via_list?
-      WHITELISTED_POSTCODES.include?(postcode)
+      whitelisted_postcodes.include?(postcode)
+    end
+
+    def whitelisted_boroughs
+      Borough.all.pluck(:name)
+    end
+
+    def whitelisted_postcodes
+      Postcode.all.pluck(:name)
     end
 end

@@ -7,18 +7,21 @@ require_relative "config/application"
 
 Rails.application.load_tasks
 
-require "rubocop/rake_task"
-require "rspec/core/rake_task"
+unless Rails.env.production?
 
-RuboCop::RakeTask.new(:rubocop) do |t|
-  t.options = ["--display-cop-names", "-a"]
+  require "rubocop/rake_task"
+  require "rspec/core/rake_task"
+
+  RuboCop::RakeTask.new(:rubocop) do |t|
+    t.options = ["--display-cop-names", "-a"]
+  end
+
+  RSpec::Core::RakeTask.new(:rspec)
+
+  # desc "test performance of algorithm against ruby default implementation"
+  # task :performance do
+  #   require "./performance"
+  # end
+
+  task default: %i[rubocop rspec]
 end
-
-RSpec::Core::RakeTask.new(:rspec)
-
-# desc "test performance of algorithm against ruby default implementation"
-# task :performance do
-#   require "./performance"
-# end
-
-task default: %i[rubocop rspec]

@@ -48,10 +48,10 @@ describe WhitelistChecker do
     end
 
     it "is whitelisted, e.g. 'SH24 1AA'" do
-      expect(subject.whitelisted?("SH24 1AA")).to be_truthy
+      expect(subject.whitelisted?("SH24 1AA", postcodes_io)).to be_truthy
     end
     it "is whitelisted, e.g. 'SH24 1AB'" do
-      expect(subject.whitelisted?("SH24 1AB")).to be_truthy
+      expect(subject.whitelisted?("SH24 1AB", postcodes_io)).to be_truthy
     end
   end
 
@@ -62,31 +62,31 @@ describe WhitelistChecker do
     end
 
     it "is whitelisted, e.g. 'SH24 1AA'" do
-      expect(subject.whitelisted?("SH24 1AA")).to be_falsy
+      expect(subject.whitelisted?("SH24 1AA", postcodes_io)).to be_falsy
     end
     it "is whitelisted, e.g. 'SH24 1AB'" do
-      expect(subject.whitelisted?("SH24 1AB")).to be_falsy
+      expect(subject.whitelisted?("SH24 1AB", postcodes_io)).to be_falsy
     end
   end
 
   context "Harrow postcode" do
     let(:result) { double :result, lsoa: "Harrow 021A" }
     it "is not whitelisted" do
-      expect(subject.whitelisted?("HA1 4LX")).to be_falsy
+      expect(subject.whitelisted?("HA1 4LX", postcodes_io)).to be_falsy
     end
   end
 
   context "API unknown postcodes that are not on the whitelist" do
     let(:postcodes) { double :postcodes, lookup: nil }
     it "is not whitelisted" do
-      expect(subject.whitelisted?("RR5 7QQ")).to be_falsy
+      expect(subject.whitelisted?("RR5 7QQ", postcodes_io)).to be_falsy
     end
   end
   context "Errors" do
     context "lsoa is empty string" do
       let(:result) { double :result, lsoa: "" }
       it "postcode is not whitelisted" do
-        expect(subject.whitelisted?("RR5 7QQ")).to be_falsy
+        expect(subject.whitelisted?("RR5 7QQ", postcodes_io)).to be_falsy
       end
     end
   end

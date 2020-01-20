@@ -156,6 +156,7 @@ https://postcode-checker.herokuapp.com/
   - [x] stick them in the database
   - [x] show the whitelists on the main page
 * [x] error cases
+  - [ ] maybe show note about server is down if postcodes server is down
 * [ ] checking input format
 * [ ] refactoring?
 * [x] test coverage
